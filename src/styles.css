@@ -306,6 +306,11 @@ button {
   overscroll-behavior: contain;
 }
 
+.game-stage__board {
+  position: relative;
+  display: grid;
+}
+
 .maze {
   display: grid;
   grid-template-columns: repeat(var(--maze-columns), minmax(0, 1fr));
@@ -515,6 +520,75 @@ button {
 
 .game-stage__status p {
   margin: 0;
+}
+
+.game-result {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  width: min(88%, 18rem);
+  padding: 0.8rem;
+  display: grid;
+  gap: 0.45rem;
+  justify-items: center;
+  text-align: center;
+  background: rgba(9, 10, 18, 0.94);
+  border: 3px solid var(--panel-border);
+  box-shadow:
+    0 0 0 4px rgba(255, 215, 58, 0.16),
+    0 18px 36px rgba(0, 0, 0, 0.42);
+  z-index: 4;
+}
+
+.game-result__eyebrow,
+.game-result__title,
+.game-result__score {
+  margin: 0;
+}
+
+.game-result__eyebrow,
+.game-result__score {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.game-result__eyebrow {
+  color: #ffe56c;
+  font-size: 0.62rem;
+}
+
+.game-result__title {
+  font-size: 0.92rem;
+  line-height: 1.15;
+  color: var(--text-main);
+}
+
+.game-result__score {
+  color: var(--text-soft);
+  font-size: 0.62rem;
+}
+
+.game-result__actions {
+  width: 100%;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.game-result__button {
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  border: 3px solid var(--panel-border);
+  background: linear-gradient(180deg, rgba(36, 51, 95, 0.95), rgba(22, 31, 57, 0.98));
+  color: #fff2b5;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+}
+
+.game-result__button--secondary {
+  border-color: rgba(103, 231, 255, 0.72);
+  color: #d8f8ff;
+  background: rgba(13, 21, 38, 0.96);
 }
 
 @media (max-width: 640px) {

@@ -46,7 +46,6 @@ function createInitialGameState(): GameState {
 
 export function GameBoard({ character, onBackToSelection }: GameBoardProps) {
   const [gameState, setGameState] = useState<GameState>(createInitialGameState);
-  void onBackToSelection;
   const swipeStartRef = useRef<Position | null>(null);
 
   const ghostPositions = useMemo(
@@ -75,6 +74,10 @@ export function GameBoard({ character, onBackToSelection }: GameBoardProps) {
           : currentState.playerDirection ?? direction,
       };
     });
+  };
+
+  const restartGame = () => {
+    setGameState(createInitialGameState());
   };
 
   useEffect(() => {
@@ -218,63 +221,85 @@ export function GameBoard({ character, onBackToSelection }: GameBoardProps) {
             swipeStartRef.current = null;
           }}
         >
-          <div
-            className="maze"
-            style={
-              {
-                "--maze-columns": maze.tiles[0].length,
-                "--maze-rows": maze.tiles.length,
-              } as CSSProperties
-            }
-          >
-            {maze.tiles.flatMap((row, rowIndex) =>
-              row.map((tile, columnIndex) => {
-                const tileKey = `${rowIndex}-${columnIndex}`;
-                const ghost = ghostPositions.get(tileKey);
-                const hasBowl = bowlPositions.has(tileKey);
-                const isPlayer =
-                  gameState.playerPosition.row === rowIndex &&
-                  gameState.playerPosition.column === columnIndex;
+          <div className="game-stage__board">
+            <div
+              className="maze"
+              style={
+                {
+                  "--maze-columns": maze.tiles[0].length,
+                  "--maze-rows": maze.tiles.length,
+                } as CSSProperties
+              }
+            >
+              {maze.tiles.flatMap((row, rowIndex) =>
+                row.map((tile, columnIndex) => {
+                  const tileKey = `${rowIndex}-${columnIndex}`;
+                  const ghost = ghostPositions.get(tileKey);
+                  const hasBowl = bowlPositions.has(tileKey);
+                  const isPlayer =
+                    gameState.playerPosition.row === rowIndex &&
+                    gameState.playerPosition.column === columnIndex;
 
-                return (
-                  <div
-                    key={tileKey}
-                    className={[
-                      "maze__tile",
-                      tile === "brickWall" ? "maze__tile--brick" : "",
-                      tile === "plant" ? "maze__tile--plant" : "",
-                    ]
-                      .filter(Boolean)
-                      .join(" ")}
+                  return (
+                    <div
+                      key={tileKey}
+                      className={[
+                        "maze__tile",
+                        tile === "brickWall" ? "maze__tile--brick" : "",
+                        tile === "plant" ? "maze__tile--plant" : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                    >
+                      {hasBowl && !ghost ? <span className="maze__bowl" aria-hidden="true" /> : null}
+                      {tile === "plant" ? <span className="maze__pot" aria-hidden="true" /> : null}
+                      {ghost ? (
+                          <span
+                            className="maze__ghost"
+                            aria-hidden="true"
+                            style={{ "--ghost-color": ghost.color } as CSSProperties}
+                          />
+                      ) : null}
+                      {isPlayer ? (
+                        <div className="maze__player">
+                          <PixelSprite character={character} />
+                        </div>
+                      ) : null}
+                    </div>
+                  );
+                }),
+              )}
+            </div>
+
+            {gameState.phase !== "playing" ? (
+              <div className="game-result" role="alert" aria-live="assertive">
+                <p className="game-result__eyebrow">
+                  {gameState.phase === "victory" ? "victory" : "ghost caught you"}
+                </p>
+                <h2 className="game-result__title">
+                  {gameState.phase === "victory"
+                    ? `${character.name} cleared the maze`
+                    : `${character.name} got trapped`}
+                </h2>
+                <p className="game-result__score">score {gameState.score}</p>
+                <div className="game-result__actions">
+                  <button type="button" className="game-result__button" onClick={restartGame}>
+                    start over
+                  </button>
+                  <button
+                    type="button"
+                    className="game-result__button game-result__button--secondary"
+                    onClick={onBackToSelection}
                   >
-                    {hasBowl && !ghost ? <span className="maze__bowl" aria-hidden="true" /> : null}
-                    {tile === "plant" ? <span className="maze__pot" aria-hidden="true" /> : null}
-                    {ghost ? (
-                        <span
-                          className="maze__ghost"
-                          aria-hidden="true"
-                          style={{ "--ghost-color": ghost.color } as CSSProperties}
-                        />
-                    ) : null}
-                    {isPlayer ? (
-                      <div className="maze__player">
-                        <PixelSprite character={character} />
-                      </div>
-                    ) : null}
-                  </div>
-                );
-              }),
-            )}
+                    choose other character
+                  </button>
+                </div>
+              </div>
+            ) : null}
           </div>
 
           <div className="game-stage__status" role="status" aria-live="polite">
-            {gameState.phase === "playing" ? (
-              <p>swipe to move</p>
-            ) : gameState.phase === "victory" ? (
-              <p>maze complete</p>
-            ) : (
-              <p>ghost caught you</p>
-            )}
+            <p>swipe to move</p>
           </div>
         </div>
 
