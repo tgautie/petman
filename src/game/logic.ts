@@ -83,6 +83,20 @@ export function createGhosts(spawns: Position[]): GhostState[] {
   }));
 }
 
+export function createFoodBowls(spawns: Position[]) {
+  const shuffledSpawns = [...spawns];
+
+  for (let index = shuffledSpawns.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    const currentSpawn = shuffledSpawns[index];
+    shuffledSpawns[index] = shuffledSpawns[swapIndex];
+    shuffledSpawns[swapIndex] = currentSpawn;
+  }
+
+  const bowlCount = Math.max(12, Math.floor(shuffledSpawns.length * 0.45));
+  return shuffledSpawns.slice(0, bowlCount);
+}
+
 export function positionsEqual(first: Position, second: Position) {
   return first.row === second.row && first.column === second.column;
 }

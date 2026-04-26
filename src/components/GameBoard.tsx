@@ -6,6 +6,7 @@ import { TouchControls } from "./TouchControls";
 import type { Character } from "../data/characters";
 import {
   chooseGhostDirection,
+  createFoodBowls,
   createGhosts,
   moveIfWalkable,
   parseMaze,
@@ -38,7 +39,7 @@ function createInitialGameState(): GameState {
     playerDirection: "left",
     queuedDirection: "left",
     ghosts: createGhosts(maze.ghostSpawns),
-    remainingFoodBowls: maze.foodBowls,
+    remainingFoodBowls: createFoodBowls(maze.foodBowls),
     score: 0,
     phase: "playing",
   };

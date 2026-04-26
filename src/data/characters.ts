@@ -1,29 +1,29 @@
-export type SpritePixel =
-  | "transparent"
-  | "outline"
-  | "fill"
-  | "accent"
-  | "shadow";
+import type { SpritePixel } from "./spritePalette";
+import circePortrait from "./portraits/circe.png";
+import louisePortrait from "./portraits/louise.png";
+import shantiPortrait from "./portraits/shanti.png";
+import sohanPortrait from "./portraits/sohan.png";
 
 export type Character = {
   id: string;
   name: string;
   species: "cat" | "dog";
   coatDescription: string;
+  portrait: string;
   sprite: SpritePixel[][];
-  palette: {
-    outline: string;
-    fill: string;
-    accent: string;
-    shadow: string;
-  };
 };
 
-const T = "transparent" as const;
-const O = "outline" as const;
-const F = "fill" as const;
-const A = "accent" as const;
-const S = "shadow" as const;
+const T = "." as const;
+const O = "O" as const;
+const L = "L" as const;
+const G = "G" as const;
+const D = "D" as const;
+const B = "B" as const;
+const K = "K" as const;
+const A = "A" as const;
+const Y = "Y" as const;
+const C = "C" as const;
+const R = "R" as const;
 
 export const characters: Character[] = [
   {
@@ -31,21 +31,16 @@ export const characters: Character[] = [
     name: "Circe",
     species: "cat",
     coatDescription: "aka Nounette",
-    palette: {
-      outline: "#f8f4d8",
-      fill: "#9ea6ba",
-      accent: "#ffd44d",
-      shadow: "#556078",
-    },
+    portrait: circePortrait,
     sprite: [
       [T, T, O, T, T, T, O, T],
-      [T, O, F, O, T, O, F, O],
-      [T, O, F, F, O, F, F, O],
-      [O, F, A, F, F, F, A, F],
-      [O, F, F, F, F, F, F, F],
-      [O, F, S, F, O, F, S, F],
-      [T, O, F, F, F, F, F, O],
-      [T, T, O, T, T, T, O, T],
+      [T, O, D, O, T, O, D, O],
+      [T, O, G, G, O, G, G, O],
+      [O, G, A, G, G, G, A, G],
+      [O, G, G, G, D, G, G, G],
+      [O, G, O, G, O, G, O, G],
+      [T, O, G, G, G, G, G, O],
+      [T, T, O, O, O, O, O, T],
     ],
   },
   {
@@ -53,20 +48,15 @@ export const characters: Character[] = [
     name: "Sohan",
     species: "cat",
     coatDescription: "black devil",
-    palette: {
-      outline: "#f8f4d8",
-      fill: "#24252d",
-      accent: "#6ae6ff",
-      shadow: "#111216",
-    },
+    portrait: sohanPortrait,
     sprite: [
       [T, T, O, T, T, T, O, T],
-      [T, O, F, O, T, O, F, O],
-      [T, O, F, F, O, F, F, O],
-      [O, F, A, F, F, F, A, F],
-      [O, F, F, F, F, F, F, F],
-      [O, F, S, F, O, F, S, F],
-      [T, O, F, F, F, F, F, O],
+      [T, O, B, O, T, O, B, O],
+      [T, O, B, B, O, B, B, O],
+      [O, B, C, B, B, B, C, B],
+      [O, B, B, B, B, B, B, B],
+      [O, B, K, B, O, B, K, B],
+      [T, O, B, B, B, B, B, O],
       [T, T, O, T, T, T, O, T],
     ],
   },
@@ -75,20 +65,15 @@ export const characters: Character[] = [
     name: "Shanti",
     species: "dog",
     coatDescription: "slavic love",
-    palette: {
-      outline: "#f8f4d8",
-      fill: "#23242a",
-      accent: "#ff735a",
-      shadow: "#0f1014",
-    },
+    portrait: shantiPortrait,
     sprite: [
       [O, T, T, T, T, T, T, O],
-      [O, O, F, O, T, O, F, O],
-      [O, F, F, F, O, F, F, O],
-      [O, F, A, F, F, F, A, F],
-      [O, F, F, F, F, F, F, F],
-      [T, O, S, F, O, F, S, O],
-      [T, O, F, F, F, F, F, O],
+      [O, O, B, O, T, O, B, O],
+      [O, B, B, B, O, B, B, O],
+      [O, B, R, B, B, B, R, B],
+      [O, B, B, B, B, B, B, B],
+      [T, O, K, B, O, B, K, O],
+      [T, O, B, B, B, B, B, O],
       [T, T, O, T, T, T, O, T],
     ],
   },
@@ -96,21 +81,16 @@ export const characters: Character[] = [
     id: "black-white-cat",
     name: "Louise",
     species: "cat",
-    coatDescription: "princess bribed",
-    palette: {
-      outline: "#f8f4d8",
-      fill: "#f3f3ef",
-      accent: "#ffd44d",
-      shadow: "#1d1d21",
-    },
+    coatDescription: "croquette princess",
+    portrait: louisePortrait,
     sprite: [
       [T, T, O, T, T, T, O, T],
-      [T, O, S, O, T, O, F, O],
-      [T, O, S, S, O, F, F, O],
-      [O, S, A, S, F, F, A, F],
-      [O, S, S, F, F, F, F, F],
-      [O, S, F, F, O, F, S, F],
-      [T, O, S, F, F, F, F, O],
+      [T, O, K, O, T, O, L, O],
+      [T, O, K, K, O, L, L, O],
+      [O, K, Y, K, L, L, Y, L],
+      [O, K, K, L, L, L, L, L],
+      [O, K, L, L, O, L, K, L],
+      [T, O, K, L, L, L, L, O],
       [T, T, O, T, T, T, O, T],
     ],
   },

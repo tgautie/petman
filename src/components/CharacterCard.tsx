@@ -1,6 +1,5 @@
 import { forwardRef } from "react";
 import type { KeyboardEvent } from "react";
-import { PixelSprite } from "./PixelSprite";
 import type { Character } from "../data/characters";
 
 type CharacterCardProps = {
@@ -36,7 +35,12 @@ export const CharacterCard = forwardRef<HTMLButtonElement, CharacterCardProps>(
         data-character-id={character.id}
       >
         <div className="character-card__frame">
-          <PixelSprite character={character} />
+          <img
+            className="character-card__portrait"
+            src={character.portrait}
+            alt=""
+            aria-hidden="true"
+          />
         </div>
         <p className="character-card__name">{character.name}</p>
         <p className="character-card__type">{character.coatDescription}</p>

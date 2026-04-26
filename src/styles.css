@@ -187,10 +187,17 @@ button {
   border: 3px solid rgba(248, 244, 216, 0.1);
 }
 
+.character-card__portrait {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
 .pixel-sprite {
   width: min(100%, 5.5rem);
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(var(--sprite-columns, 8), 1fr);
   gap: 0;
   aspect-ratio: 1;
   image-rendering: pixelated;
@@ -202,22 +209,6 @@ button {
 
 .pixel--transparent {
   background: transparent;
-}
-
-.pixel--outline {
-  background: var(--sprite-outline);
-}
-
-.pixel--fill {
-  background: var(--sprite-fill);
-}
-
-.pixel--accent {
-  background: var(--sprite-accent);
-}
-
-.pixel--shadow {
-  background: var(--sprite-shadow);
 }
 
 .character-card__name,
@@ -434,24 +425,54 @@ button {
 }
 
 .maze__bowl {
-  width: 42%;
+  width: 68%;
   height: 42%;
-  border-radius: 0 0 48% 48%;
-  background: linear-gradient(180deg, #ffe98b, #ff8d4e);
-  border: 2px solid #fff3c3;
+  border-radius: 48% 48% 36% 36% / 32% 32% 52% 52%;
+  background:
+    radial-gradient(circle at 24% 68%, rgba(255, 255, 255, 0.5), transparent 18%),
+    linear-gradient(180deg, #eef5fa 0%, #dbe6ee 58%, #c6d3de 100%);
+  border: 1px solid #d2dde6;
   position: relative;
   z-index: 1;
+  box-shadow:
+    inset 0 -4px 0 rgba(140, 155, 167, 0.4),
+    0 1px 0 rgba(255, 255, 255, 0.22);
 }
 
 .maze__bowl::before {
   content: "";
   position: absolute;
-  top: -20%;
-  left: 12%;
-  width: 76%;
-  height: 22%;
-  background: #fff5c6;
+  top: 2%;
+  left: 10%;
+  width: 80%;
+  height: 42%;
+  background:
+    radial-gradient(circle at 50% 28%, #b88657 0 48%, transparent 49%),
+    radial-gradient(circle at 22% 52%, #a77446 0 20%, transparent 21%),
+    radial-gradient(circle at 34% 38%, #b07b4b 0 18%, transparent 19%),
+    radial-gradient(circle at 46% 56%, #9d6a3f 0 20%, transparent 21%),
+    radial-gradient(circle at 58% 40%, #b07b4b 0 18%, transparent 19%),
+    radial-gradient(circle at 70% 54%, #9d6a3f 0 20%, transparent 21%),
+    radial-gradient(circle at 82% 44%, #a77446 0 18%, transparent 19%);
   border-radius: 999px;
+  box-shadow: 0 0 0 999px transparent;
+}
+
+.maze__bowl::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 16%;
+  width: 18%;
+  height: 18%;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(circle at 50% 70%, #4a4c53 0 48%, transparent 49%),
+    radial-gradient(circle at 18% 24%, #4a4c53 0 18%, transparent 19%),
+    radial-gradient(circle at 40% 12%, #4a4c53 0 16%, transparent 17%),
+    radial-gradient(circle at 60% 12%, #4a4c53 0 16%, transparent 17%),
+    radial-gradient(circle at 82% 24%, #4a4c53 0 18%, transparent 19%);
+  opacity: 0.9;
 }
 
 .maze__ghost {

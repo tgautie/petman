@@ -1,37 +1,38 @@
 import type { CSSProperties } from "react";
-import type { Character, SpritePixel } from "../data/characters";
+import type { Character } from "../data/characters";
+import { SPRITE_PALETTE, type SpritePixel } from "../data/spritePalette";
 
 type PixelSpriteProps = {
   character: Character;
+  sprite?: SpritePixel[][];
 };
 
-const pixelClassByType: Record<SpritePixel, string> = {
-  transparent: "pixel pixel--transparent",
-  outline: "pixel pixel--outline",
-  fill: "pixel pixel--fill",
-  accent: "pixel pixel--accent",
-  shadow: "pixel pixel--shadow",
-};
+export function PixelSprite({ character, sprite }: PixelSpriteProps) {
+  const activeSprite = sprite ?? character.sprite;
+  const columnCount = activeSprite[0]?.length ?? 0;
 
-export function PixelSprite({ character }: PixelSpriteProps) {
   return (
     <div
       className="pixel-sprite"
       aria-hidden="true"
       style={
         {
-          "--sprite-outline": character.palette.outline,
-          "--sprite-fill": character.palette.fill,
-          "--sprite-accent": character.palette.accent,
-          "--sprite-shadow": character.palette.shadow,
+          "--sprite-columns": String(columnCount),
         } as CSSProperties
       }
     >
-      {character.sprite.flatMap((row, rowIndex) =>
+      {activeSprite.flatMap((row, rowIndex) =>
         row.map((pixel, columnIndex) => (
           <span
             key={`${character.id}-${rowIndex}-${columnIndex}`}
-            className={pixelClassByType[pixel]}
+            className={pixel === "." ? "pixel pixel--transparent" : "pixel"}
+            style={
+              pixel === "."
+                ? undefined
+                : ({
+                    backgroundColor: SPRITE_PALETTE[pixel as SpritePixel],
+                  } as CSSProperties)
+            }
           />
         )),
       )}
