@@ -406,8 +406,12 @@ button {
   grid-template-columns: repeat(var(--maze-columns), minmax(0, 1fr));
   width: min(100%, 40rem);
   margin: 0 auto;
+  padding: 0.45rem;
+  gap: 2px;
   border: 4px solid #f6df73;
-  background: #080a13;
+  background:
+    linear-gradient(180deg, rgba(103, 231, 255, 0.14), rgba(255, 229, 108, 0.1)),
+    #080a13;
   box-shadow:
     0 0 0 4px rgba(103, 231, 255, 0.12),
     0 20px 36px rgba(0, 0, 0, 0.35);

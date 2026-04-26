@@ -41,14 +41,21 @@ export function CharacterSelect({ onStartGame }: CharacterSelectProps) {
     nextButton?.focus();
   }, [focusedCharacterId]);
 
+  useEffect(() => {
+    if (!selectedCharacterId) {
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      onStartGame(selectedCharacterId);
+    }, 1000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [onStartGame, selectedCharacterId]);
+
   const handleSelect = (characterId: string) => {
     setFocusedCharacterId(characterId);
     setSelectedCharacterId(characterId);
-  };
-
-  const handleStartGame = (characterId: string) => {
-    setSelectedCharacterId(characterId);
-    onStartGame(characterId);
   };
 
   const handleMove = (key: string) => {
@@ -102,11 +109,6 @@ export function CharacterSelect({ onStartGame }: CharacterSelectProps) {
 
                     if (event.key === "Enter" || event.key === " ") {
                       event.preventDefault();
-                      if (selectedCharacterId === character.id) {
-                        handleStartGame(character.id);
-                        return;
-                      }
-
                       handleSelect(character.id);
                     }
                   }}
@@ -121,24 +123,12 @@ export function CharacterSelect({ onStartGame }: CharacterSelectProps) {
 
         <footer className="selector-panel__footer">
           <p>tap a card or use arrow keys</p>
-          <p>press enter twice to choose and start</p>
+          <p>game starts 1 second after selection</p>
           <p className="selector-panel__picked">
             {selectedCharacterId
-              ? `selected: ${characters.find((character) => character.id === selectedCharacterId)?.coatDescription}`
+              ? `selected: ${characters.find((character) => character.id === selectedCharacterId)?.coatDescription} | launching...`
               : "no player selected"}
           </p>
-          <button
-            type="button"
-            className="selector-panel__start"
-            disabled={!selectedCharacterId}
-            onClick={() => {
-              if (selectedCharacterId) {
-                handleStartGame(selectedCharacterId);
-              }
-            }}
-          >
-            start game
-          </button>
         </footer>
       </section>
     </main>

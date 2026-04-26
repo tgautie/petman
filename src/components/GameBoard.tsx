@@ -139,13 +139,17 @@ export function GameBoard({ character, onBackToSelection }: GameBoardProps) {
         }
 
         const ghosts = currentState.ghosts.map((ghost) => {
-          const nextDirection = chooseGhostDirection(maze.tiles, ghost, playerPosition);
+          const nextDirection = chooseGhostDirection(maze.tiles, ghost);
 
           return {
             ...ghost,
             direction: nextDirection,
             position: moveIfWalkable(maze.tiles, ghost.position, nextDirection),
           };
+        });
+
+        remainingFoodBowls = remainingFoodBowls.filter((foodBowl) => {
+          return !ghosts.some((ghost) => positionsEqual(ghost.position, foodBowl));
         });
 
         const ghostCollision = ghosts.some((ghost) =>

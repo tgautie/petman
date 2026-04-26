@@ -18,12 +18,19 @@ const oppositeDirection: Record<Direction, Direction> = {
 const ghostPalette = ["#ff6b6b", "#67e7ff", "#ff9d4d", "#ff77d1"];
 
 export function parseMaze(): MazeData {
+  const expectedWidth = mazeRows[0].length;
   const tiles: TileType[][] = [];
   const foodBowls: Position[] = [];
   const ghostSpawns: Position[] = [];
   let playerSpawn: Position | null = null;
 
   mazeRows.forEach((row, rowIndex) => {
+    if (row.length !== expectedWidth) {
+      throw new Error(
+        `Maze row ${rowIndex} has width ${row.length}, expected ${expectedWidth}.`,
+      );
+    }
+
     const parsedRow: TileType[] = [];
 
     row.split("").forEach((cell, columnIndex) => {
@@ -112,7 +119,6 @@ export function removeFoodBowl(foodBowls: Position[], playerPosition: Position) 
 export function chooseGhostDirection(
   tiles: TileType[][],
   ghost: GhostState,
-  playerPosition: Position,
 ) {
   const availableDirections = (Object.keys(directionOffsets) as Direction[]).filter(
     (direction) => isWalkable(tiles, getNextPosition(ghost.position, direction)),
@@ -124,20 +130,10 @@ export function chooseGhostDirection(
 
   const options = nonReverseDirections.length > 0 ? nonReverseDirections : availableDirections;
 
-  return options.reduce((bestDirection, currentDirection) => {
-    const bestDistance = manhattanDistance(
-      getNextPosition(ghost.position, bestDirection),
-      playerPosition,
-    );
-    const currentDistance = manhattanDistance(
-      getNextPosition(ghost.position, currentDirection),
-      playerPosition,
-    );
+  if (options.length === 0) {
+    return ghost.direction;
+  }
 
-    return currentDistance < bestDistance ? currentDirection : bestDirection;
-  }, options[0] ?? ghost.direction);
-}
-
-function manhattanDistance(first: Position, second: Position) {
-  return Math.abs(first.row - second.row) + Math.abs(first.column - second.column);
+  const randomIndex = Math.floor(Math.random() * options.length);
+  return options[randomIndex];
 }
