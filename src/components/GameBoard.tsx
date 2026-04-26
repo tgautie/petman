@@ -46,6 +46,7 @@ function createInitialGameState(): GameState {
 
 export function GameBoard({ character, onBackToSelection }: GameBoardProps) {
   const [gameState, setGameState] = useState<GameState>(createInitialGameState);
+  void onBackToSelection;
 
   const ghostPositions = useMemo(
     () => new Map(gameState.ghosts.map((ghost) => [`${ghost.position.row}-${ghost.position.column}`, ghost])),
@@ -56,10 +57,6 @@ export function GameBoard({ character, onBackToSelection }: GameBoardProps) {
     () => new Set(gameState.remainingFoodBowls.map((bowl) => `${bowl.row}-${bowl.column}`)),
     [gameState.remainingFoodBowls],
   );
-
-  const handleRestart = () => {
-    setGameState(createInitialGameState());
-  };
 
   const queueDirection = (direction: Direction) => {
     setGameState((currentState) => {
@@ -184,21 +181,10 @@ export function GameBoard({ character, onBackToSelection }: GameBoardProps) {
         <Hud
           character={character}
           score={gameState.score}
-          bowlsLeft={gameState.remainingFoodBowls.length}
           phaseLabel={getPhaseLabel(gameState.phase)}
-          onRestart={handleRestart}
-          onBackToSelection={onBackToSelection}
         />
 
         <div className="game-stage">
-          <div className="game-stage__intro">
-            <p className="selector-panel__eyebrow">pet maze run</p>
-            <h1 className="game-stage__title">feed run</h1>
-            <p className="game-stage__subtitle">
-              Collect every bowl of food, dodge the ghosts, and stay out of the plants and walls.
-            </p>
-          </div>
-
           <div
             className="maze"
             style={
@@ -229,6 +215,7 @@ export function GameBoard({ character, onBackToSelection }: GameBoardProps) {
                       .join(" ")}
                   >
                     {hasBowl ? <span className="maze__bowl" aria-hidden="true" /> : null}
+                    {tile === "plant" ? <span className="maze__pot" aria-hidden="true" /> : null}
                     {ghost ? (
                         <span
                           className="maze__ghost"
@@ -249,11 +236,11 @@ export function GameBoard({ character, onBackToSelection }: GameBoardProps) {
 
           <div className="game-stage__status" role="status" aria-live="polite">
             {gameState.phase === "playing" ? (
-              <p>Use arrow keys or touch controls to sweep the maze.</p>
+              <p>collect bowls</p>
             ) : gameState.phase === "victory" ? (
-              <p>{character.name} cleared every bowl. Maze complete.</p>
+              <p>maze complete</p>
             ) : (
-              <p>A ghost caught {character.name}. Restart or change player.</p>
+              <p>ghost caught you</p>
             )}
           </div>
         </div>

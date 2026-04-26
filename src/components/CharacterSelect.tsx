@@ -68,18 +68,8 @@ export function CharacterSelect({ onStartGame }: CharacterSelectProps) {
   return (
     <main className="screen-shell">
       <section className="selector-panel" aria-labelledby="choose-player-title">
-        <div className="selector-panel__hud" aria-hidden="true">
-          <span>1UP</span>
-          <span>Petman</span>
-          <span>{selectedCharacterId ? "player locked" : "insert coin"}</span>
-        </div>
-
         <header className="selector-panel__header">
-          <p className="selector-panel__eyebrow">retro roster select</p>
           <h1 id="choose-player-title">choose your player</h1>
-          <p className="selector-panel__subtitle">
-            Pick your companion before entering the maze.
-          </p>
         </header>
 
         <div className="character-grid" role="list" aria-label="Player choices">
@@ -122,12 +112,10 @@ export function CharacterSelect({ onStartGame }: CharacterSelectProps) {
         </div>
 
         <footer className="selector-panel__footer">
-          <p>tap a card or use arrow keys</p>
-          <p>game starts 1 second after selection</p>
           <p className="selector-panel__picked">
             {selectedCharacterId
-              ? `selected: ${characters.find((character) => character.id === selectedCharacterId)?.coatDescription} | launching...`
-              : "no player selected"}
+              ? `launching ${characters.find((character) => character.id === selectedCharacterId)?.name}...`
+              : "tap or use arrows"}
           </p>
         </footer>
       </section>
