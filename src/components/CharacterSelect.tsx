@@ -4,6 +4,10 @@ import { characters } from "../data/characters";
 
 const columnCount = 2;
 
+type CharacterSelectProps = {
+  onStartGame: (characterId: string) => void;
+};
+
 function getCharacterIndex(id: string) {
   return characters.findIndex((character) => character.id === id);
 }
@@ -27,7 +31,7 @@ function getNextIndex(currentIndex: number, key: string) {
   }
 }
 
-export function CharacterSelect() {
+export function CharacterSelect({ onStartGame }: CharacterSelectProps) {
   const [focusedCharacterId, setFocusedCharacterId] = useState(characters[0].id);
   const [selectedCharacterId, setSelectedCharacterId] = useState<string | null>(null);
   const buttonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
@@ -40,6 +44,11 @@ export function CharacterSelect() {
   const handleSelect = (characterId: string) => {
     setFocusedCharacterId(characterId);
     setSelectedCharacterId(characterId);
+  };
+
+  const handleStartGame = (characterId: string) => {
+    setSelectedCharacterId(characterId);
+    onStartGame(characterId);
   };
 
   const handleMove = (key: string) => {
@@ -93,6 +102,11 @@ export function CharacterSelect() {
 
                     if (event.key === "Enter" || event.key === " ") {
                       event.preventDefault();
+                      if (selectedCharacterId === character.id) {
+                        handleStartGame(character.id);
+                        return;
+                      }
+
                       handleSelect(character.id);
                     }
                   }}
@@ -107,12 +121,24 @@ export function CharacterSelect() {
 
         <footer className="selector-panel__footer">
           <p>tap a card or use arrow keys</p>
-          <p>press enter or space to choose</p>
+          <p>press enter twice to choose and start</p>
           <p className="selector-panel__picked">
             {selectedCharacterId
               ? `selected: ${characters.find((character) => character.id === selectedCharacterId)?.coatDescription}`
               : "no player selected"}
           </p>
+          <button
+            type="button"
+            className="selector-panel__start"
+            disabled={!selectedCharacterId}
+            onClick={() => {
+              if (selectedCharacterId) {
+                handleStartGame(selectedCharacterId);
+              }
+            }}
+          >
+            start game
+          </button>
         </footer>
       </section>
     </main>
