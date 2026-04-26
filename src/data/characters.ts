@@ -22,7 +22,6 @@ const B = "B" as const;
 const K = "K" as const;
 const A = "A" as const;
 const Y = "Y" as const;
-const C = "C" as const;
 const R = "R" as const;
 
 export const characters: Character[] = [
@@ -33,14 +32,14 @@ export const characters: Character[] = [
     coatDescription: "aka Nounette",
     portrait: circePortrait,
     sprite: [
-      [T, T, O, T, T, T, O, T],
-      [T, O, D, O, T, O, D, O],
-      [T, O, G, G, O, G, G, O],
-      [O, G, A, G, G, G, A, G],
-      [O, G, G, G, D, G, G, G],
-      [O, G, O, G, O, G, O, G],
-      [T, O, G, G, G, G, G, O],
-      [T, T, O, O, O, O, O, T],
+      [T, O, O, T, T, O, O, T],
+      [O, D, A, O, O, G, D, O],
+      [O, A, D, G, G, D, L, O],
+      [O, D, A, Y, D, Y, G, O],
+      [O, D, D, D, G, L, D, O],
+      [T, O, D, L, O, R, O, T],
+      [T, T, O, G, L, O, T, T],
+      [T, T, T, O, O, T, T, T],
     ],
   },
   {
@@ -50,14 +49,14 @@ export const characters: Character[] = [
     coatDescription: "black devil",
     portrait: sohanPortrait,
     sprite: [
-      [T, T, O, T, T, T, O, T],
-      [T, O, B, O, T, O, B, O],
-      [T, O, B, B, O, B, B, O],
-      [O, B, C, B, B, B, C, B],
-      [O, B, B, B, B, B, B, B],
-      [O, B, K, B, O, B, K, B],
-      [T, O, B, B, B, B, B, O],
-      [T, T, O, T, T, T, O, T],
+      [T, O, T, T, T, T, O, T],
+      [O, K, O, T, T, O, K, O],
+      [O, B, B, O, O, B, B, O],
+      [O, B, Y, B, B, Y, B, O],
+      [O, B, B, B, B, L, B, O],
+      [O, B, K, B, O, K, B, O],
+      [T, O, B, B, B, B, O, T],
+      [T, T, O, O, O, O, T, T],
     ],
   },
   {
@@ -68,13 +67,13 @@ export const characters: Character[] = [
     portrait: shantiPortrait,
     sprite: [
       [O, T, T, T, T, T, T, O],
-      [O, O, B, O, T, O, B, O],
-      [O, B, B, B, O, B, B, O],
-      [O, B, R, B, B, B, R, B],
-      [O, B, B, B, B, B, B, B],
-      [T, O, K, B, O, B, K, O],
-      [T, O, B, B, B, B, B, O],
-      [T, T, O, T, T, T, O, T],
+      [O, O, B, O, O, B, O, O],
+      [O, B, B, Y, B, B, Y, O],
+      [O, B, B, B, B, B, B, O],
+      [O, B, K, B, O, B, K, O],
+      [O, B, B, B, R, B, B, O],
+      [T, O, B, B, B, B, O, T],
+      [T, T, O, O, O, O, T, T],
     ],
   },
   {
@@ -84,14 +83,14 @@ export const characters: Character[] = [
     coatDescription: "croquette princess",
     portrait: louisePortrait,
     sprite: [
-      [T, T, O, T, T, T, O, T],
-      [T, O, K, O, T, O, L, O],
-      [T, O, K, K, O, L, L, O],
-      [O, K, Y, K, L, L, Y, L],
-      [O, K, K, L, L, L, L, L],
-      [O, K, L, L, O, L, K, L],
-      [T, O, K, L, L, L, L, O],
-      [T, T, O, T, T, T, O, T],
+      [T, O, T, T, T, T, O, T],
+      [O, K, O, T, T, O, L, O],
+      [O, K, K, O, O, L, L, O],
+      [O, K, Y, K, L, Y, K, O],
+      [O, K, L, L, L, L, L, O],
+      [O, K, L, O, O, L, K, O],
+      [T, O, L, L, L, L, O, T],
+      [T, T, O, O, O, O, T, T],
     ],
   },
 ];
