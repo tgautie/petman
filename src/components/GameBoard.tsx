@@ -1,8 +1,7 @@
 import type { CSSProperties } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { PixelSprite } from "./PixelSprite";
 import { Hud } from "./Hud";
-import { TouchControls } from "./TouchControls";
 import type { Character } from "../data/characters";
 import {
   chooseGhostDirection,
@@ -25,8 +24,8 @@ const tickIntervalMs = 220;
 
 type GameState = {
   playerPosition: Position;
-  playerDirection: Direction;
-  queuedDirection: Direction;
+  playerDirection: Direction | null;
+  queuedDirection: Direction | null;
   ghosts: GhostState[];
   remainingFoodBowls: Position[];
   score: number;
@@ -36,8 +35,8 @@ type GameState = {
 function createInitialGameState(): GameState {
   return {
     playerPosition: maze.playerSpawn,
-    playerDirection: "left",
-    queuedDirection: "left",
+    playerDirection: null,
+    queuedDirection: null,
     ghosts: createGhosts(maze.ghostSpawns),
     remainingFoodBowls: createFoodBowls(maze.foodBowls),
     score: 0,
@@ -48,6 +47,7 @@ function createInitialGameState(): GameState {
 export function GameBoard({ character, onBackToSelection }: GameBoardProps) {
   const [gameState, setGameState] = useState<GameState>(createInitialGameState);
   void onBackToSelection;
+  const swipeStartRef = useRef<Position | null>(null);
 
   const ghostPositions = useMemo(
     () => new Map(gameState.ghosts.map((ghost) => [`${ghost.position.row}-${ghost.position.column}`, ghost])),
@@ -72,7 +72,7 @@ export function GameBoard({ character, onBackToSelection }: GameBoardProps) {
         queuedDirection: direction,
         playerDirection: !positionsEqual(nextPosition, currentState.playerPosition)
           ? direction
-          : currentState.playerDirection,
+          : currentState.playerDirection ?? direction,
       };
     });
   };
@@ -113,20 +113,22 @@ export function GameBoard({ character, onBackToSelection }: GameBoardProps) {
           return currentState;
         }
 
-        const requestedPosition = moveIfWalkable(
-          maze.tiles,
-          currentState.playerPosition,
-          currentState.queuedDirection,
-        );
-        const canTurn = !positionsEqual(requestedPosition, currentState.playerPosition);
+        const requestedPosition = currentState.queuedDirection
+          ? moveIfWalkable(
+              maze.tiles,
+              currentState.playerPosition,
+              currentState.queuedDirection,
+            )
+          : currentState.playerPosition;
+        const canTurn =
+          currentState.queuedDirection !== null &&
+          !positionsEqual(requestedPosition, currentState.playerPosition);
         const activeDirection = canTurn
           ? currentState.queuedDirection
           : currentState.playerDirection;
-        const playerPosition = moveIfWalkable(
-          maze.tiles,
-          currentState.playerPosition,
-          activeDirection,
-        );
+        const playerPosition = activeDirection
+          ? moveIfWalkable(maze.tiles, currentState.playerPosition, activeDirection)
+          : currentState.playerPosition;
 
         let remainingFoodBowls = currentState.remainingFoodBowls;
         let score = currentState.score;
@@ -181,7 +183,41 @@ export function GameBoard({ character, onBackToSelection }: GameBoardProps) {
           phaseLabel={getPhaseLabel(gameState.phase)}
         />
 
-        <div className="game-stage">
+        <div
+          className="game-stage"
+          onTouchStart={(event) => {
+            const touch = event.changedTouches[0];
+            swipeStartRef.current = { row: touch.clientY, column: touch.clientX };
+          }}
+          onTouchEnd={(event) => {
+            const swipeStart = swipeStartRef.current;
+            const touch = event.changedTouches[0];
+
+            if (!swipeStart) {
+              return;
+            }
+
+            const deltaX = touch.clientX - swipeStart.column;
+            const deltaY = touch.clientY - swipeStart.row;
+            const swipeThreshold = 24;
+
+            if (
+              Math.abs(deltaX) < swipeThreshold &&
+              Math.abs(deltaY) < swipeThreshold
+            ) {
+              swipeStartRef.current = null;
+              return;
+            }
+
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+              queueDirection(deltaX > 0 ? "right" : "left");
+            } else {
+              queueDirection(deltaY > 0 ? "down" : "up");
+            }
+
+            swipeStartRef.current = null;
+          }}
+        >
           <div
             className="maze"
             style={
@@ -233,7 +269,7 @@ export function GameBoard({ character, onBackToSelection }: GameBoardProps) {
 
           <div className="game-stage__status" role="status" aria-live="polite">
             {gameState.phase === "playing" ? (
-              <p>collect bowls</p>
+              <p>swipe to move</p>
             ) : gameState.phase === "victory" ? (
               <p>maze complete</p>
             ) : (
@@ -242,10 +278,6 @@ export function GameBoard({ character, onBackToSelection }: GameBoardProps) {
           </div>
         </div>
 
-        <TouchControls
-          disabled={gameState.phase !== "playing"}
-          onMove={queueDirection}
-        />
       </section>
     </main>
   );
