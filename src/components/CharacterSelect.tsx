@@ -69,7 +69,7 @@ export function CharacterSelect({ onStartGame }: CharacterSelectProps) {
     <main className="screen-shell">
       <section className="selector-panel" aria-labelledby="choose-player-title">
         <header className="selector-panel__header">
-          <h1 id="choose-player-title">choose your player</h1>
+          <h1 id="choose-player-title">petman</h1>
         </header>
 
         <div className="character-grid" role="list" aria-label="Player choices">
@@ -115,7 +115,7 @@ export function CharacterSelect({ onStartGame }: CharacterSelectProps) {
           <p className="selector-panel__picked">
             {selectedCharacterId
               ? `launching ${characters.find((character) => character.id === selectedCharacterId)?.name}...`
-              : "tap or use arrows"}
+              : "choose your player"}
           </p>
         </footer>
       </section>

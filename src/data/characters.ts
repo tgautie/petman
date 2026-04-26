@@ -28,9 +28,9 @@ const S = "shadow" as const;
 export const characters: Character[] = [
   {
     id: "grey-cat",
-    name: "Miso",
+    name: "Circe",
     species: "cat",
-    coatDescription: "grey cat",
+    coatDescription: "aka Nounette",
     palette: {
       outline: "#f8f4d8",
       fill: "#9ea6ba",
@@ -50,9 +50,9 @@ export const characters: Character[] = [
   },
   {
     id: "black-cat",
-    name: "Nyx",
+    name: "Sohan",
     species: "cat",
-    coatDescription: "black cat",
+    coatDescription: "black devil",
     palette: {
       outline: "#f8f4d8",
       fill: "#24252d",
@@ -72,9 +72,9 @@ export const characters: Character[] = [
   },
   {
     id: "black-dog",
-    name: "Rex",
+    name: "Shanti",
     species: "dog",
-    coatDescription: "black dog",
+    coatDescription: "slavic love",
     palette: {
       outline: "#f8f4d8",
       fill: "#23242a",
@@ -94,9 +94,9 @@ export const characters: Character[] = [
   },
   {
     id: "black-white-cat",
-    name: "Domino",
+    name: "Louise",
     species: "cat",
-    coatDescription: "black and white cat",
+    coatDescription: "princess bribed",
     palette: {
       outline: "#f8f4d8",
       fill: "#f3f3ef",

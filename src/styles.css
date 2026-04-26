@@ -221,8 +221,7 @@ button {
 }
 
 .character-card__name,
-.character-card__type,
-.character-card__status {
+.character-card__type {
   margin: 0;
   text-align: center;
 }
@@ -236,23 +235,6 @@ button {
 .character-card__type {
   color: var(--text-soft);
   font-size: 0.63rem;
-}
-
-.character-card__status {
-  min-width: 8ch;
-  padding: 0.18rem 0.4rem;
-  border: 2px solid currentColor;
-  font-size: 0.56rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-}
-
-.character-card--selected .character-card__status {
-  color: #ffd3ca;
-}
-
-.character-card--focused:not(.character-card--selected) .character-card__status {
-  color: #bdf6ff;
 }
 
 .selector-panel__footer {

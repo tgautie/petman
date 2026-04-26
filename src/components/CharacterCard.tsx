@@ -40,9 +40,6 @@ export const CharacterCard = forwardRef<HTMLButtonElement, CharacterCardProps>(
         </div>
         <p className="character-card__name">{character.name}</p>
         <p className="character-card__type">{character.coatDescription}</p>
-        <div className="character-card__status" aria-hidden="true">
-          <span>{isSelected ? "selected" : isFocused ? "ready" : "available"}</span>
-        </div>
       </button>
     );
   },

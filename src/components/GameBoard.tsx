@@ -145,10 +145,6 @@ export function GameBoard({ character, onBackToSelection }: GameBoardProps) {
           };
         });
 
-        remainingFoodBowls = remainingFoodBowls.filter((foodBowl) => {
-          return !ghosts.some((ghost) => positionsEqual(ghost.position, foodBowl));
-        });
-
         const ghostCollision = ghosts.some((ghost) =>
           positionsEqual(ghost.position, playerPosition),
         );
@@ -214,7 +210,7 @@ export function GameBoard({ character, onBackToSelection }: GameBoardProps) {
                       .filter(Boolean)
                       .join(" ")}
                   >
-                    {hasBowl ? <span className="maze__bowl" aria-hidden="true" /> : null}
+                    {hasBowl && !ghost ? <span className="maze__bowl" aria-hidden="true" /> : null}
                     {tile === "plant" ? <span className="maze__pot" aria-hidden="true" /> : null}
                     {ghost ? (
                         <span
